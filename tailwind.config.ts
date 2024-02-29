@@ -27,7 +27,9 @@ const config: Config = {
         "400px":"400px",
       },
       colors: {
-        primary: 'var(--clr-primary)',
+        'primary-red': 'var(--clr-primary-red)',
+        'error-red': 'var(--clr-error-red)',
+        'button-black':'var(--clr-button-black)',
         secondary: 'var(--clr-secondary)',
         text: 'var(--clr-text)',
         'text-faded': 'var(--clr-text-faded)',

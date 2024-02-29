@@ -32,12 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider store={store}>
+        {/* <Provider store={store}> */}
           <div className={ `${poppins.variable} ${josefin.variable}`}>
             {children}
             <Toaster position="top-center" reverseOrder={false}/>
           </div>
-        </Provider>
+        {/* </Provider> */}
       </body>
     </html>
   );
