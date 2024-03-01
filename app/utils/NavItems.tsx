@@ -41,7 +41,7 @@ const NavItems = (props: Props) => {
           {
             navItems.map((item:{ name: string , link:string} , index:number) => 
               <Link key={index} href={item.link} passHref 
-                className={`${ (item.name === 'Home' && pathname === '/') || (item.name !== 'Home' && pathname.includes(item.link))? 
+                className={`${ (item.name === 'Home' && pathname === '/') || (item.name !== 'Home'&& pathname && pathname.includes(item.link))? 
                   'text-primary-red': 'text-white'} text-[18px] 1200px:px-6 800px:px-4 font-Poppins font-[400] uppercase`}>
                 {item.name}
               </Link>
@@ -54,7 +54,7 @@ const NavItems = (props: Props) => {
             {
               navItems.map((item:{ name: string , link:string} , index:number) => 
                 <Link key={index} href={item.link} passHref 
-                  className={`${ (item.name === '/' && pathname === '/') || (item.name !== '/' && pathname.includes(item.name))? 
+                  className={`${ (item.name === '/' && pathname === '/') || (item.name !== '/' && pathname && pathname.includes(item.name))? 
                     'text-primary-red': 'text-white'} text-[18px] px-6 font-Poppins font-[400] block`}>
                   {item.name}
                 </Link>
