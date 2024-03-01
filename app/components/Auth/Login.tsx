@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./Login.css";
+import "./Auth.css";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { GrClose } from "react-icons/gr";

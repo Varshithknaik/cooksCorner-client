@@ -7,7 +7,8 @@ import NavItems from './NavItems';
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import { IoIosLogIn } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
-import Login from '../components/Login/Login';
+import Login from '../components/Auth/Login';
+import SignUp from '../components/Auth/SignUp';
 type Props = {
   title: string;
   landingPage?: boolean
@@ -102,6 +103,11 @@ const Header = (props: Props) => {
       {
         tab === 'login' && (
           <Login handleClick={handleClick} handleTabChange={handleTabChange}/>
+        )
+      }
+      {
+        tab === 'signup' && (
+          <SignUp />
         )
       }
     </>
