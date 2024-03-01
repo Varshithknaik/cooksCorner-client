@@ -35,7 +35,7 @@ const Login = (props: Props) => {
   const { values , touched , errors , handleChange , handleSubmit} = formik;
   return (
     <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#2121218a]'>
-      <div className='glassmorphism-login-container p-2 px-4'>
+      <div className='glassmorphism-login-container p-2 px-4 pop-up'>
         <div className='flex w-full items-center justify-center px-2 py-2 my-1'>
           <h1 className='text-xl font-bold text-white m-auto'>Login with <span style={{ color: 'hsla(0, 86%, 41%, 0.862)'}}>Food</span>Chilli</h1>
           <button onClick={props.handleClick}> <GrClose /></button>

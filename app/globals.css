@@ -13,8 +13,8 @@
   --clr-background: #FAFAFA;
 }
 
-body {
-
+body:has(.pop-up){
+  overflow: hidden;
 }
 
 
