@@ -52,8 +52,9 @@ const Login = (props: Props) => {
             <input type={show ? 'text' : 'password'} id='password' name='password' placeholder='password' onChange={handleChange} value={values.password}
               className={`${errors.password && touched.password ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
               {
-                show ?
-                  <AiOutlineEyeInvisible className='absolute left-[94%] top-[64%] cursor-pointer' onClick={() => setShow(!show)}/>
+                !show ?
+                  <AiOutlineEyeInvisible className= {`absolute cursor-pointer left-[94%] 
+                    ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} onClick={() => setShow(!show)}/>
                     :
                   <AiOutlineEye className={`absolute cursor-pointer left-[94%] 
                     ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} 

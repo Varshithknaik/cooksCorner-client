@@ -9,6 +9,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
+import { styles } from '../styles/style';
 type Props = {
   title: string;
   landingPage?: boolean
@@ -92,10 +93,21 @@ const Header = (props: Props) => {
         <div className='background-image'>
           <Image src={headerImage} alt='header'/>
         </div>
-        <div className = "header-content-wrapper">
+        <div className = "header-content-wrapper w-[25rem]">
           {
             props.landingPage ?
-            <div>Some big name</div>
+            <div className='flex flex-col absolute left-[15%] bottom-[15%] text-start w-[25rem]'>
+              <h1 className='flex flex-col items-start text-[3.5rem] leading-[3.5rem] font-bold text-start'>
+                A Delicious 
+                <br />
+                <span><span className='text-primary-red'>Chilli</span> And </span>
+                Fruit Fusion
+              </h1>
+              <p>Full of Flavour And Brusting with Spices...</p>
+              <Link href={"/recipe"} passHref>
+                <button className={`${styles.button} text-white bg-primary-red w-28 h-[1.2rem]`}>Recipe</button>
+              </Link>
+            </div>
             : <h1> {props.title} </h1>
           }
         </div>
@@ -107,7 +119,7 @@ const Header = (props: Props) => {
       }
       {
         tab === 'signup' && (
-          <SignUp />
+          <SignUp handleClick={handleClick} handleTabChange={handleTabChange}/>
         )
       }
     </>

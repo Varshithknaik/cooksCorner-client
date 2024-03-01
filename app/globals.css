@@ -13,6 +13,12 @@
   --clr-background: #FAFAFA;
 }
 
+*{
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
 body:has(.pop-up){
   overflow: hidden;
 }
@@ -41,6 +47,7 @@ body:has(.pop-up){
   right: 0px;
   opacity: 1;
   transition: all 1.4s ease 0s;
+  min-height: 25rem;
 }
 
 .header-content-wrapper{
