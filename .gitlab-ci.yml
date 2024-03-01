@@ -14,13 +14,13 @@ before_script:
  - apt-get update -qq && apt-get install -y nodejs npm
  - npm install -g jest
  - npm install
+ - npm install --save-dev ts-node
 
 unit-test-job:
  stage: test
  script:
     - echo "Running unit tests with Jest..."
-    - jest --coverage
-    - echo "Code coverage is above 90%"
+    - jest --coverag
 
 lint-test-job:
  stage: test
