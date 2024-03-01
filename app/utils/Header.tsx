@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Image from 'next/image';
-import headerImage from "../../public/pexels-yente-van-eynde-2403392.jpg";
+import headerImage from "../../public/IMG20240229185516.jpg";
 import Link from 'next/link';
 import NavItems from './NavItems';
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
