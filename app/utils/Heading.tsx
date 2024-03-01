@@ -7,6 +7,8 @@ type Props = {
 }
 
 const Heading = (props: Props) => {
+  console.log('ff')
+  console.log(props)
   return (
     <>
       <title>{props.title}</title>
