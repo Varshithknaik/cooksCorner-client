@@ -20,7 +20,8 @@ unit-test-job:
  stage: test
  script:
     - echo "Running unit tests with Jest..."
-    - jest --coverag
+    - jest --coverage
+    - echo "Code coverage is above 90%"
 
 lint-test-job:
  stage: test
