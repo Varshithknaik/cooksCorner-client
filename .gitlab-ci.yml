@@ -9,11 +9,9 @@ build-job:
     - echo "Compiling the code..."
     - echo "Compile complete."
 
-image: ruby:3.1
+image: node:latest
 before_script:
- - apt-get update -qq && apt-get install -y nodejs npm
  - npm install -g jest
- - npm install
  - npm install --save-dev ts-node
 
 unit-test-job:
