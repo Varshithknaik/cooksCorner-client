@@ -16,7 +16,7 @@ unit-test-job:
     - echo "Running unit tests with Jest..."
     - npm install --save-dev ts-node ts-jest
     - npm install --save-dev jest # Ensure Jest is installed
-    - NODE_OPTIONS="-r ts-node/register" jest --coverage
+    - jest --coverage
  image: node:latest
 
 lint-test-job:
