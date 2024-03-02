@@ -11,12 +11,13 @@ build-job:
   image: node:latest
 
 unit-test-job:
-  stage: test
-  script:
+ stage: test
+ script:
     - echo "Running unit tests with Jest..."
     - npm install --save-dev ts-node ts-jest
+    - npm install --save-dev jest # Ensure Jest is installed
     - NODE_OPTIONS="-r ts-node/register" jest --coverage
-  image: node:latest
+ image: node:latest
 
 lint-test-job:
   stage: test
