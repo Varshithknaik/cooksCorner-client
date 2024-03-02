@@ -4,33 +4,33 @@ stages:
  - deploy
 
 build-job:
- stage: build
- script:
+  stage: build
+  script:
     - echo "Compiling the code..."
     - echo "Compile complete."
-
-image: node:latest
-before_script:
- - npm install -g jest
- - npm install --save-dev ts-node
+  image: node:latest
 
 unit-test-job:
- stage: test
- script:
+  stage: test
+  script:
     - echo "Running unit tests with Jest..."
-    - jest --coverage
-    - echo "Code coverage is above 90%"
+    - npm install --save-dev ts-node ts-jest
+    - NODE_OPTIONS="-r ts-node/register" jest --coverage
+  image: node:latest
 
 lint-test-job:
- stage: test
- script:
+  stage: test
+  script:
     - echo "Linting code... This will take about 10 seconds."
+    - npm install
     - npm run lint
     - echo "No lint issues found."
+  image: node:latest
 
 deploy-job:
- stage: deploy
- environment: production
- script:
+  stage: deploy
+  environment: production
+  script:
     - echo "Deploying application..."
     - echo "Application successfully deployed."
+  image: node:latest

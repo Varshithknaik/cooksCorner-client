@@ -22,10 +22,11 @@ jest.mock('../../app/utils/Heading', () => ({
      title: 'Food Chilli',
      description: 'A Delecious Chillies and Fruit Fusion',
      keywords: 'For Everyone, Everywhere'
-  }, {});
+  },{});
+
   expect(Header).toHaveBeenCalledWith({
      title: 'A Delicious Chillies and Fruit Fusion',
      landingPage: true
-  }, {});
+  },{});
  });
  
