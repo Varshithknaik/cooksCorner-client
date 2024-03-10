@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
     "formik": "^2.4.5",
     "next": "14.1.0",
     "react": "^18",
