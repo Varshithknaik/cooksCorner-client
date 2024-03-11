@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { GrClose } from "react-icons/gr";
 import { styles } from '@/app/styles/style';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import InputField from '../InputField/InputField';
 
 
 type Props = {
@@ -22,7 +23,6 @@ const schema = Yup.object().shape({
 });
 
 const Login = (props: Props) => {
-  const [ show , setShow ] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -41,27 +41,27 @@ const Login = (props: Props) => {
           <button onClick={props.handleClick}> <GrClose /></button>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className='flex relative flex-col mt-5 mb-1 input-container'>
-            <label htmlFor="email" className={styles.label}>Email</label>
-            <input type='email' id='email' name='email' placeholder='loginmail@email.com' onChange={handleChange} value={values.email}
-              className={`${errors.email && touched.email ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-            {errors.email && touched.email && <span className='text-error-red text-sm'>{errors.email} </span>}
-          </div>
-          <div className='flex relative flex-col mt-5 mb-1 input-container'>
-            <label htmlFor="email" className={styles.label}>Password</label>
-            <input type={show ? 'text' : 'password'} id='password' name='password' placeholder='password' onChange={handleChange} value={values.password}
-              className={`${errors.password && touched.password ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-              {
-                !show ?
-                  <AiOutlineEyeInvisible className= {`absolute cursor-pointer left-[94%] 
-                    ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} onClick={() => setShow(!show)}/>
-                    :
-                  <AiOutlineEye className={`absolute cursor-pointer left-[94%] 
-                    ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} 
-                    onClick={() => setShow(!show)}/>
-              }
-            {errors.password && touched.password && <span className='text-error-red text-sm'>{errors.password} </span>}
-          </div>
+          <InputField 
+            type="email" 
+            name="email" 
+            title= 'Email'
+            placeholder="Email" 
+            value={values.email} 
+            onChange={handleChange} 
+            error={errors.email} 
+            touched={touched.email} 
+          />
+          <InputField 
+            type='password'
+            name="password" 
+            title= 'Password'
+            placeholder="Password" 
+            value={values.password} 
+            onChange={handleChange} 
+            error={errors.password} 
+            touched={touched.password} 
+          />
+
           <div className='w-full mt-5'>
             <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Login"/>
           </div>

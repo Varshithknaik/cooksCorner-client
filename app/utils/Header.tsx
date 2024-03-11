@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Image from 'next/image';
-import headerImage from "../../public/IMG20240229185516.jpg";
+import headerImage from "../../public/pexels-yente-van-eynde-2403392.jpg";
 import Link from 'next/link';
 import NavItems from './NavItems';
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
@@ -10,6 +10,7 @@ import { IoIosLogOut } from "react-icons/io";
 import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
 import { styles } from '../styles/style';
+import Validation from '../components/Auth/Validation';
 type Props = {
   title: string;
   landingPage?: boolean
@@ -17,7 +18,7 @@ type Props = {
 
 const Header = (props: Props) => {
   const [ openSidebar , setOpenSidebar ] = useState<boolean>(false);
-  const [ tab , setTab ] = useState<string>("");
+  const [ tab , setTab ] = useState<string>("validation");
 
   const handleClose = () => {
     setOpenSidebar(false);
@@ -50,7 +51,7 @@ const Header = (props: Props) => {
                 className={
                   "hidden 800px:block cursor-pointer text-white"
                 }
-                onClick={() => setTab('login')}
+                onClick={() => setTab('validation')}
                 />
                 <div className="800px:hidden">
                   <HiOutlineMenuAlt3
@@ -120,6 +121,11 @@ const Header = (props: Props) => {
       {
         tab === 'signup' && (
           <SignUp handleClick={handleClick} handleTabChange={handleTabChange}/>
+        )
+      }
+      {
+        tab === 'validation' && (
+          <Validation />
         )
       }
     </>
