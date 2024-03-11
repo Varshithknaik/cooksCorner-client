@@ -1,9 +1,9 @@
 import { styles } from '@/app/styles/style'
 import { useFormik } from 'formik';
-import React, { useState } from 'react'
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import React from 'react'
 import { GrClose } from 'react-icons/gr';
 import * as Yup from 'yup';
+import InputField from '../InputField/InputField';
 
 type Props = {
   handleClick: () => void,
@@ -23,8 +23,6 @@ const schema = Yup.object().shape({
 });
 
 const SignUp = (props: Props) => {
-  const [ show , setShow ] = useState<boolean>(false);
-
   const formik = useFormik({
     initialValues: { username: '' , email: '' , password: '' , confirmPassword: '' },
     validationSchema: schema,
@@ -37,46 +35,53 @@ const SignUp = (props: Props) => {
   const { errors , values , touched , handleChange , handleSubmit } = formik;
 
   return (
-    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#2121218a]'>
+    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0]'>
     <div className='glassmorphism-login-container p-2 px-4 pop-up'>
       <div className='flex w-full items-center justify-center px-2 py-2 my-1'>
         <h1 className='text-xl font-bold text-white m-auto'>Join with <span style={{ color: 'hsla(0, 86%, 41%, 0.862)'}}>Food</span>Chilli</h1>
         <button onClick={props.handleClick}> <GrClose /></button>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className='flex relative flex-col mt-5 mb-1 input-container'>
-          <label htmlFor = "username" className={styles.label}>Username</label>
-          <input type='username' id='username' name='username' placeholder='loginmail@email.com' onChange={handleChange} value={values.username}
-            className={`${errors.username && touched.username ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-          {errors.username && touched.username && <span className='text-error-red text-sm'>{errors.username} </span>}
-        </div>
-        <div className='flex relative flex-col mt-5 mb-1 input-container'>
-          <label htmlFor="email" className={styles.label}>Email</label>
-          <input type='email' id='email' name='email' placeholder='loginmail@email.com' onChange={handleChange} value={values.email}
-            className={`${errors.email && touched.email ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-          {errors.email && touched.email && <span className='text-error-red text-sm'>{errors.email} </span>}
-        </div>
-        <div className='flex relative flex-col mt-5 mb-1 input-container'>
-          <label htmlFor="password" className={styles.label}>Password</label>
-          <input type={show ? 'text' : 'password'} id='password' name='password' placeholder='password' onChange={handleChange} value={values.password}
-            className={`${errors.password && touched.password ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-            {
-              !show ?
-                <AiOutlineEyeInvisible className= {`absolute cursor-pointer left-[94%] 
-                ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} onClick={() => setShow(!show)}/>
-                  :
-                <AiOutlineEye className={`absolute cursor-pointer left-[94%] 
-                  ${errors.password && touched.password ?'top-[50%]' : ' top-[64%]' } `} 
-                  onClick={() => setShow(!show)}/>
-            }
-          {errors.password && touched.password && <span className='text-error-red text-sm'>{errors.password} </span>}
-        </div>
-        <div className='flex relative flex-col mt-5 mb-1 input-container'>
-          <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
-          <input type={'password'} id='confirmPassword' name='confirmPassword' placeholder='confirmPassword' onChange={handleChange} value={values.confirmPassword}
-            className={`${errors.confirmPassword && touched.confirmPassword ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
-          {errors.confirmPassword && touched.confirmPassword && <span className='text-error-red text-sm'>{errors.confirmPassword} </span>}
-        </div>
+         <InputField 
+            type='text'
+            title = 'Username'
+            placeholder='Username'
+            onChange={handleChange}
+            value={values.username}
+            name='username'
+            error={errors.username}
+            touched={touched.email}
+          />
+          <InputField 
+            type='email'
+            title='Email'
+            placeholder='Email'
+            onChange={handleChange}
+            value={values.email}
+            name='email'
+            error={errors.email}
+            touched={touched.email}
+          />
+          <InputField 
+            type='password'
+            title='Password'
+            placeholder='Password'
+            onChange={handleChange}
+            value={values.password}
+            name='password'
+            error={errors.password}
+            touched={touched.password}
+          />
+          <InputField 
+            type='password'
+            title='Confirm Password'
+            placeholder='Confirm Password'
+            onChange={handleChange}
+            value={values.confirmPassword}
+            name='confirmpassword'
+            error={errors.confirmPassword}
+            touched={touched.confirmPassword}
+          />
         <div className='w-full mt-5'>
           <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Register"/>
         </div>
