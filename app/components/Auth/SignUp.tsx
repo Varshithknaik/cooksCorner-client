@@ -1,9 +1,15 @@
 import { styles } from '@/app/styles/style'
 import { useFormik } from 'formik';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GrClose } from 'react-icons/gr';
 import * as Yup from 'yup';
 import InputField from '../InputField/InputField';
+import { encrypt } from '@/util/encryption';
+import { useAppDispatch } from '@/app/hooks/useCustomRedux';
+import { setRegistrationInfo } from '@/redux/features/auth/authSlice';
+import { useRegistrationMutation } from '@/redux/features/auth/authApiSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 
 type Props = {
   handleClick: () => void,
@@ -11,7 +17,7 @@ type Props = {
 }
 
 const schema = Yup.object().shape({
-  username: Yup.string()
+  name: Yup.string()
     .min(2, "Minimum 2 characters")
     .max(30, "Maximum 30 characters")
     .required("Username is required"),
@@ -20,26 +26,36 @@ const schema = Yup.object().shape({
     .min(8, 'Minimum 8 characters' )
     .max(100 , 'Maximum 100 characters')
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/,
       "Require uppercase, lowercase, number, special character"
     ).required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], "Passwords must match")
     .required("Confirm password is required"),
 });
-
 const SignUp = (props: Props) => {
+  const appDispatch = useAppDispatch();
+  const [ register, { data , isSuccess , error }  ] = useRegistrationMutation();
+
+  useEffect(() => {
+    if( isSuccess){
+      console.log(data);
+    } else if(error && 'data' in error){
+      console.log(error.data);
+    }
+  }, [ data , isSuccess , error ])
+
   const formik = useFormik({
-    initialValues: { username: '' , email: '' , password: '' , confirmPassword: '' },
+    initialValues: { name: '' , email: '' , password: '' , confirmPassword: '' },
     validationSchema: schema,
 
-    onSubmit(values, formikHelpers) {
-      console.log(values);
+    onSubmit: async({name , email , password }) => {
+      const encrytedRegistrationInfo = encrypt(JSON.stringify({ name , password }));
+      appDispatch(setRegistrationInfo(encrytedRegistrationInfo));
+      await register({ email });
     },
   })
-
   const { errors , values , touched , handleChange , handleSubmit } = formik;
-
   return (
     <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-1'>
       <div className='glassmorphism-login-container p-2 px-4 pop-up'>
@@ -53,9 +69,9 @@ const SignUp = (props: Props) => {
               title = 'Username'
               placeholder='Username'
               onChange={handleChange}
-              value={values.username}
-              name='username'
-              error={errors.username}
+              value={values.name}
+              name='name'
+              error={errors.name}
               touched={touched.email}
             />
             <InputField 
@@ -88,14 +104,16 @@ const SignUp = (props: Props) => {
               error={errors.confirmPassword}
               touched={touched.confirmPassword}
             />
-          <div className='w-full mt-5'>
-            <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Register"/>
-          </div>
-          <h5 className='text-center pt-3 font-Poppins text-[14px text-white'> 
+            <div className='w-full mt-5'>
+              <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Login"/>
+            </div>
+            <h5 className='text-center pt-3 font-Poppins text-[14px text-white'> 
               Already have an account?{" "}
-              <span className='text-primary-red cursor-pointer' onClick={() => props.handleTabChange("login")}>
+              <button className='text-primary-red cursor-pointer' 
+                onKeyDown={(e) => { if(e.key === 'Enter') { props.handleTabChange("login") } }} 
+                onClick={() => props.handleTabChange("login")}>
                 Login 
-              </span>
+              </button>
           </h5>
         </form>
       </div>

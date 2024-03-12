@@ -20,9 +20,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     login: builder.mutation({
       query: (data) => ({
-        url: "/api/auth/login",
+        url: "/api/v1/login",
         method: "POST",
-        body: encrypt(JSON.stringify(data)),
+        body:{ data :  encrypt(JSON.stringify(data))},
       }),
       async onQueryStarted( args , { queryFulfilled , dispatch }){
         try{
@@ -50,3 +50,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
     })
   }),
 })
+
+export const {
+  useRegistrationMutation,
+  useValidateUserMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useUserInfoMutation,
+} = authApiSlice;

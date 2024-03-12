@@ -20,7 +20,7 @@ const baseQueryWithReauth = async( args:string | FetchArgs , api: BaseQueryApi ,
   if( result?.error?.status === 403){
     console.log('Sending Refresh token');
 
-    const refreshResult = await baseQuery('/api/auth/refresh', api , extraOptions);
+    const refreshResult = await baseQuery('/api/v1/refresh', api , extraOptions);
     if( refreshResult?.data){
       const user = (api.getState() as RootState).auth.user;
       api.dispatch(setCredential({...refreshResult.data, user}));

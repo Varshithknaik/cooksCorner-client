@@ -6,6 +6,7 @@ import { GrClose } from "react-icons/gr";
 import { styles } from '@/app/styles/style';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import InputField from '../InputField/InputField';
+import { useLoginMutation } from '@/redux/features/auth/authApiSlice';
 
 
 type Props = {
@@ -23,12 +24,13 @@ const schema = Yup.object().shape({
 });
 
 const Login = (props: Props) => {
-
+  const [ login , { data , isSuccess , error } ] = useLoginMutation();
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: schema,
-    onSubmit: (values) => {
+    onSubmit: async ({ email , password }) => {
       console.log(values)
+      await login({ email , password });
     },
   });
 

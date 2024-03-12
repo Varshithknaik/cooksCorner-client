@@ -5,8 +5,7 @@ import headerImage from "../../public/pexels-yente-van-eynde-2403392.jpg";
 import Link from 'next/link';
 import NavItems from './NavItems';
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
-import { IoIosLogIn } from "react-icons/io";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogIn , IoIosLogOut } from "react-icons/io";
 import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
 import { styles } from '../styles/style';
@@ -18,11 +17,10 @@ type Props = {
 
 const Header = (props: Props) => {
   const [ openSidebar , setOpenSidebar ] = useState<boolean>(false);
-  const [ tab , setTab ] = useState<string>("validation");
+  const [ tab , setTab ] = useState<string>("");
 
   const handleClose = () => {
     setOpenSidebar(false);
-
   }
 
   const handleClick = () => {
@@ -51,7 +49,7 @@ const Header = (props: Props) => {
                 className={
                   "hidden 800px:block cursor-pointer text-white"
                 }
-                onClick={() => setTab('validation')}
+                onClick={() => setTab('login')}
                 />
                 <div className="800px:hidden">
                   <HiOutlineMenuAlt3
@@ -101,7 +99,7 @@ const Header = (props: Props) => {
               <h1 className='flex flex-col items-start text-[3.5rem] leading-[3.5rem] font-bold text-start'>
                 A Delicious 
                 <br />
-                <span><span className='text-primary-red'>Chilli</span> And </span>
+                <span><span className='text-primary-red'>Chilli</span>And</span>
                 Fruit Fusion
               </h1>
               <p>Full of Flavour And Brusting with Spices...</p>
@@ -125,7 +123,7 @@ const Header = (props: Props) => {
       }
       {
         tab === 'validation' && (
-          <Validation />
+          <Validation handleClose={handleClick} handleTabChange={handleTabChange}/>
         )
       }
     </>
