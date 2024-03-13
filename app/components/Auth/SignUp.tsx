@@ -8,8 +8,7 @@ import { encrypt } from '@/util/encryption';
 import { useAppDispatch } from '@/app/hooks/useCustomRedux';
 import { setRegistrationInfo } from '@/redux/features/auth/authSlice';
 import { useRegistrationMutation } from '@/redux/features/auth/authApiSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import toast from 'react-hot-toast';
 
 type Props = {
   handleClick: () => void,
@@ -40,19 +39,21 @@ const SignUp = (props: Props) => {
   useEffect(() => {
     if( isSuccess){
       console.log(data);
+      props.handleTabChange('validation');
     } else if(error && 'data' in error){
-      console.log(error.data);
+      console.log(error, 'error')
+      toast.error((error.data as any).message);
     }
-  }, [ data , isSuccess , error ])
+  }, [data, isSuccess, error, props])
 
   const formik = useFormik({
     initialValues: { name: '' , email: '' , password: '' , confirmPassword: '' },
     validationSchema: schema,
 
     onSubmit: async({name , email , password }) => {
-      const encrytedRegistrationInfo = encrypt(JSON.stringify({ name , password }));
-      appDispatch(setRegistrationInfo(encrytedRegistrationInfo));
-      await register({ email });
+      const registrationInfo = { name , password };
+      appDispatch(setRegistrationInfo(registrationInfo));
+      await register({ name , email  });
     },
   })
   const { errors , values , touched , handleChange , handleSubmit } = formik;

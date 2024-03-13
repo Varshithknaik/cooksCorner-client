@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import "./Auth.css";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { GrClose } from "react-icons/gr";
 import { styles } from '@/app/styles/style';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import InputField from '../InputField/InputField';
 import { useLoginMutation } from '@/redux/features/auth/authApiSlice';
+import toast from 'react-hot-toast';
 
 
 type Props = {
@@ -29,10 +29,19 @@ const Login = (props: Props) => {
     initialValues: { email: '', password: '' },
     validationSchema: schema,
     onSubmit: async ({ email , password }) => {
-      console.log(values)
       await login({ email , password });
     },
   });
+
+  useEffect(() => {
+    if( isSuccess){
+      console.log(data);
+      toast.success('Login Successful');
+      props.handleTabChange('')
+    } else if(error && 'data' in error){
+      toast.error((error.data as any).message);
+    }
+  }, [data, isSuccess, error, props])
 
   const { values , touched , errors , handleChange , handleSubmit} = formik;
   return (

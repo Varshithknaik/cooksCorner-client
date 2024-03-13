@@ -6,17 +6,28 @@ export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registration: builder.mutation({
       query: (data) => ({
-        url: "/api/auth/registration",
+        url: "/api/v1/register",
         method: "POST",
         body: data,
       }),
     }),
     validateUser: builder.mutation({
       query: (data) => ({
-        url: "/api/auth/validate",
+        url: "/api/v1/validate",
         method: "POST",
-        body: JSON.stringify(data),
+        body: { data :  encrypt(JSON.stringify(data))},
       }),
+      async onQueryStarted( args , { queryFulfilled , dispatch }){
+        try{
+          const { data } = await queryFulfilled;
+          dispatch(setCredential({
+            token: data.token,
+            user: {},
+          }))
+        }catch(error){
+          console.log(error)
+        }
+      }
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -44,7 +55,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     userInfo: builder.mutation({
       query: () => ({
-        url: "/api/auth/user",
+        url: "/api/auth/me",
         method: "GET",
       }),
     })
