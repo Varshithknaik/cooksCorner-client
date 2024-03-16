@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import "./Auth.css";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -7,6 +7,7 @@ import { styles } from '@/app/styles/style';
 import InputField from '../InputField/InputField';
 import { useLoginMutation } from '@/redux/features/auth/authApiSlice';
 import toast from 'react-hot-toast';
+import { errorBlock } from '@/config/errorBlock';
 
 
 type Props = {
@@ -24,7 +25,11 @@ const schema = Yup.object().shape({
 });
 
 const Login = (props: Props) => {
-  const [ login , { data , isSuccess , error } ] = useLoginMutation();
+  const [ login , { data , isSuccess , error , isLoading } ] = useLoginMutation();
+  const emailRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, [])
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: schema,
@@ -38,14 +43,15 @@ const Login = (props: Props) => {
       console.log(data);
       toast.success('Login Successful');
       props.handleTabChange('')
-    } else if(error && 'data' in error){
-      toast.error((error.data as any).message);
+    } 
+    if(error){
+      errorBlock(error);
     }
   }, [data, isSuccess, error, props])
 
   const { values , touched , errors , handleChange , handleSubmit} = formik;
   return (
-    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0]'>
+    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-10'>
       <div className='glassmorphism-login-container p-2 px-4 pop-up'>
         <div className='flex w-full items-center justify-center px-2 py-2 my-1'>
           <h1 className='text-xl font-bold text-white m-auto'>Login with <span style={{ color: 'hsla(0, 86%, 41%, 0.862)'}}>Food</span>Chilli</h1>
@@ -61,6 +67,8 @@ const Login = (props: Props) => {
             onChange={handleChange} 
             error={errors.email} 
             touched={touched.email} 
+            ref={emailRef}
+            autoComplete = {false}
           />
           <InputField 
             type='password'
@@ -71,10 +79,15 @@ const Login = (props: Props) => {
             onChange={handleChange} 
             error={errors.password} 
             touched={touched.password} 
+            autoComplete = {false}
           />
 
           <div className='w-full mt-5'>
-            <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Login"/>
+            <input type="submit" 
+              disabled={isLoading}
+              className={`${styles.button} text-white bg-button-black ${ isLoading ? 'opacity-40': '' }`} 
+              value="Login"
+              />
           </div>
           <h5 className='text-center pt-3 font-Poppins text-[14px text-white'> 
             Don&rsquo;t have an account?{" "}

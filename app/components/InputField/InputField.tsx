@@ -1,5 +1,5 @@
 import { styles } from '@/app/styles/style';
-import React, { useState } from 'react'
+import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 type Props = {
@@ -11,14 +11,30 @@ type Props = {
   value: string;
   touched: boolean | undefined;
   error: string | undefined;
+  autoComplete?: boolean
 }
 
-const InputField = (props: Props) => {
+const InputField = forwardRef<HTMLInputElement, Props>((props: Props , ref: ForwardedRef<HTMLInputElement>) => {
   const [ show , setShow ] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if( ref && 'current' in ref ){
+      ref.current?.focus();
+    }
+  },[ref] )
+
   return (
     <div className='flex relative flex-col mt-5 mb-1 input-container'>
         <label htmlFor = { props.name} className={styles.label}>{props.title}</label>
-        <input type= {show ? props.type : 'text'} id= { props.name } name={props.name} placeholder= {props.placeholder} onChange={props.onChange} value={props.value}
+        <input type= {!show ? props.type : 'text'} 
+          id= { props.name } 
+          name={props.name} 
+          placeholder= {props.placeholder} 
+          onChange={props.onChange}
+          value={props.value}
+          ref={ref && 'current' in ref ? ref : inputRef}
+          autoComplete={props.autoComplete ? 'on' : 'off'}
           className={`${props.error && props.touched ? 'border-error-red' : 'border-[#2121218a]' } ${styles.input} `}/>
         {props.error && props.touched && <span className='text-error-red text-sm'>{ props.error } </span>}
         { 
@@ -32,6 +48,7 @@ const InputField = (props: Props) => {
         }
     </div>
   )
-}
+})
 
+InputField.displayName = 'InputField';
 export default InputField

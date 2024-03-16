@@ -10,6 +10,9 @@ import Login from '../components/Auth/Login';
 import SignUp from '../components/Auth/SignUp';
 import { styles } from '../styles/style';
 import Validation from '../components/Auth/Validation';
+import { selectUser } from '@/redux/features/auth/authSlice';
+import { useAppSelector } from '../hooks/useCustomRedux';
+import ProfileIcon from '../components/ProfileIcon/ProfileIcon';
 type Props = {
   title: string;
   landingPage?: boolean
@@ -18,6 +21,7 @@ type Props = {
 const Header = (props: Props) => {
   const [ openSidebar , setOpenSidebar ] = useState<boolean>(false);
   const [ tab , setTab ] = useState<string>("");
+  const user = useAppSelector(selectUser);
 
   const handleClose = () => {
     setOpenSidebar(false);
@@ -44,20 +48,29 @@ const Header = (props: Props) => {
             </Link>
             <NavItems isMobile= {false}/>
             <div>
-              <HiOutlineUserCircle
-                size={25}
-                className={
-                  "hidden 800px:block cursor-pointer text-white"
-                }
-                onClick={() => setTab('login')}
-                />
-                <div className="800px:hidden">
-                  <HiOutlineMenuAlt3
+              <div className='hidden 800px:block'>
+                { user ? 
+                
+                  (
+                    <Link href={'/profile'} passHref>
+                      <ProfileIcon />
+                    </Link>
+                  )
+                  : 
+                  <HiOutlineUserCircle
                     size={25}
-                    className={"cursor-pointer text-white"}
-                    onClick={() => setOpenSidebar(true)}
+                    className={"hidden 800px:block cursor-pointer text-white"}
+                    onClick={() => setTab('login')}
                   />
-                </div>
+                }
+              </div>
+              <div className="800px:hidden">
+                <HiOutlineMenuAlt3
+                  size={25}
+                  className={"cursor-pointer text-white"}
+                  onClick={() => setOpenSidebar(true)}
+                />
+              </div>
             </div>
           </nav>
           {

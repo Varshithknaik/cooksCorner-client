@@ -1,14 +1,14 @@
 import { styles } from '@/app/styles/style'
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { GrClose } from 'react-icons/gr';
 import * as Yup from 'yup';
 import InputField from '../InputField/InputField';
-import { encrypt } from '@/util/encryption';
 import { useAppDispatch } from '@/app/hooks/useCustomRedux';
 import { setRegistrationInfo } from '@/redux/features/auth/authSlice';
 import { useRegistrationMutation } from '@/redux/features/auth/authApiSlice';
 import toast from 'react-hot-toast';
+import { errorBlock } from '@/config/errorBlock';
 
 type Props = {
   handleClick: () => void,
@@ -34,15 +34,18 @@ const schema = Yup.object().shape({
 });
 const SignUp = (props: Props) => {
   const appDispatch = useAppDispatch();
-  const [ register, { data , isSuccess , error }  ] = useRegistrationMutation();
+  const [ register, { data , isSuccess , error , isLoading }  ] = useRegistrationMutation();
+  const usernameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    usernameRef.current?.focus();
+  }, [])
+  useEffect(() => {
     if( isSuccess){
-      console.log(data);
       props.handleTabChange('validation');
-    } else if(error && 'data' in error){
-      console.log(error, 'error')
-      toast.error((error.data as any).message);
+      toast.success('Please check the register email to verify your account');
+    } else if(error){
+      errorBlock(error)
     }
   }, [data, isSuccess, error, props])
 
@@ -58,7 +61,7 @@ const SignUp = (props: Props) => {
   })
   const { errors , values , touched , handleChange , handleSubmit } = formik;
   return (
-    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-1'>
+    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-10'>
       <div className='glassmorphism-login-container p-2 px-4 pop-up'>
         <div className='flex w-full items-center justify-center px-2 py-2 my-1'>
           <h1 className='text-xl font-bold text-white m-auto'>Join with <span style={{ color: 'hsla(0, 86%, 41%, 0.862)'}}>Food</span>Chilli</h1>
@@ -74,6 +77,8 @@ const SignUp = (props: Props) => {
               name='name'
               error={errors.name}
               touched={touched.email}
+              ref={usernameRef}
+              autoComplete={false}
             />
             <InputField 
               type='email'
@@ -106,7 +111,10 @@ const SignUp = (props: Props) => {
               touched={touched.confirmPassword}
             />
             <div className='w-full mt-5'>
-              <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Login"/>
+              <input type="submit" 
+                disabled={isLoading}
+                className={`${styles.button} text-white bg-button-black ${ isLoading ? 'opacity-40': '' }`} 
+                value="Register"/>
             </div>
             <h5 className='text-center pt-3 font-Poppins text-[14px text-white'> 
               Already have an account?{" "}

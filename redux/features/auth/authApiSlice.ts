@@ -1,4 +1,4 @@
-import { encrypt } from "@/util/encryption";
+import { decrypt, encrypt } from "@/util/encryption";
 import { setCredential } from "./authSlice";
 import { apiSlice } from "../api/apiSlice";
 
@@ -9,13 +9,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: "/api/v1/register",
         method: "POST",
         body: data,
-      }),
-    }),
-    validateUser: builder.mutation({
-      query: (data) => ({
-        url: "/api/v1/validate",
-        method: "POST",
-        body: { data :  encrypt(JSON.stringify(data))},
       }),
       async onQueryStarted( args , { queryFulfilled , dispatch }){
         try{
@@ -29,6 +22,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       }
     }),
+    validateUser: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/validate",
+        method: "POST",
+        body: { data :  encrypt(JSON.stringify(data))},
+      }),
+    }),
     login: builder.mutation({
       query: (data) => ({
         url: "/api/v1/login",
@@ -38,9 +38,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted( args , { queryFulfilled , dispatch }){
         try{
           const { data } = await queryFulfilled;
+          console.log(data);
+          const { accessToken , user } = JSON.parse(decrypt(data.data));
           dispatch(setCredential({
-            token: data.accessToken,
-            user: data.user,
+            token: accessToken,
+            user: user,
           }))
         }catch(error){
           console.log(error)

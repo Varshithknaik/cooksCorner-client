@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/app/hooks/useCustomRedux';
 import { styles } from '@/app/styles/style';
+import { errorBlock } from '@/config/errorBlock';
 import { useValidateUserMutation } from '@/redux/features/auth/authApiSlice';
 import { selectRegistrationInfo } from '@/redux/features/auth/authSlice';
 import React, { useEffect, useRef, useState } from 'react'
@@ -37,7 +38,7 @@ const Validation = (props: Props) => {
   const [ otp , setOtp ] = useState<string[]>(new Array(OTP_FIELD).fill(''));
   const inputRef = useRef<HTMLInputElement[]>([]);
 
-  const [ validation , { error , isSuccess }] = useValidateUserMutation();
+  const [ validation , { error , isSuccess , isLoading }] = useValidateUserMutation();
   const registrationInfo = useSelector(selectRegistrationInfo);
   useEffect(() => {
     (inputRef.current[0] as any)?.focus();
@@ -45,15 +46,11 @@ const Validation = (props: Props) => {
 
   useEffect(() => {
     if(isSuccess) {
-      console.log(error);
       toast.success('Registration Successful');
       props.handleTabChange('');
     }
-    if( error && 'data' in error){
-      toast.error( (error.data as any).message)
-    }
     if(error){
-      console.log(error);
+      errorBlock(error);
     }
   }, [error, isSuccess, props])
 
@@ -80,7 +77,7 @@ const Validation = (props: Props) => {
   }
 
   return (
-    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-1'>
+    <div className='flex justify-center items-center w-full h-full min-h-[100vh] relative bg-[#212121f0] z-10'>
       <div className='glassmorphism-login-container p-2 px-4 pop-up'>
         <div className='flex w-full items-center justify-center px-2 py-2 my-1'>
           <h1 className='text-xl font-bold text-white m-auto'>Join with <span style={{ color: 'hsla(0, 86%, 41%, 0.862)'}}>Food</span>Chilli</h1>
@@ -103,14 +100,17 @@ const Validation = (props: Props) => {
             }
           </div>
           <div className='w-full mt-5'>
-            <input type="submit" className={`${styles.button} text-white bg-button-black`} value="Register"/>
+            <input type="submit" 
+              disabled={isLoading}
+              className={`${styles.button} text-white bg-button-black ${ isLoading ? 'opacity-40': '' }`} 
+              value="Register"/>
           </div>
           <h5 className='text-center pt-3 font-Poppins text-[14px text-white'> 
               Already have an account?{" "}
               <button className='text-primary-red cursor-pointer' 
                 onKeyDown={(e) => { if(e.key === 'Enter') { props.handleTabChange("login") } }} 
                 onClick={() => props.handleTabChange("login")}>
-                Login 
+                Sign In 
               </button>
           </h5>
         </form>
