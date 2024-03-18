@@ -35,11 +35,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body:{ data :  encrypt(JSON.stringify(data))},
       }),
+      invalidatesTags: ['User'],
       async onQueryStarted( args , { queryFulfilled , dispatch }){
         try{
           const { data } = await queryFulfilled;
-          console.log(data);
           const { accessToken , user } = JSON.parse(decrypt(data.data));
+          console.log(accessToken, user);
           dispatch(setCredential({
             token: accessToken,
             user: user,
@@ -51,15 +52,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     logout: builder.mutation({
       query: () => ({
-        url: "/api/auth/logout",
+        url: "/api/v1/logout",
         method: "GET",
       }),
     }),
-    userInfo: builder.mutation({
+    userInfo: builder.query({
       query: () => ({
-        url: "/api/auth/me",
+        url: "/api/v1/me",
         method: "GET",
       }),
+      // providesTags: ['User']
     })
   }),
 })
@@ -69,5 +71,5 @@ export const {
   useValidateUserMutation,
   useLoginMutation,
   useLogoutMutation,
-  useUserInfoMutation,
+  useUserInfoQuery,
 } = authApiSlice;

@@ -22,9 +22,7 @@ const baseQueryWithReauth = async( args:string | FetchArgs , api: BaseQueryApi ,
 
     const refreshResult = await baseQuery('/api/v1/refresh', api , extraOptions);
     if( refreshResult?.data){
-      const user = (api.getState() as RootState).auth.user;
-      api.dispatch(setCredential({...refreshResult.data, user}));
-
+      api.dispatch(setCredential({ token: (refreshResult.data as { success:string , accessToken:string})?.accessToken , user: {}}));
       result = await baseQuery(args, api, extraOptions);
     }else{
       api.dispatch(logout({}));
@@ -35,5 +33,6 @@ const baseQueryWithReauth = async( args:string | FetchArgs , api: BaseQueryApi ,
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['User'],
   endpoints: () => ({})
 })

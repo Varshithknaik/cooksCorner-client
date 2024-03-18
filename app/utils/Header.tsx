@@ -52,9 +52,9 @@ const Header = (props: Props) => {
                 { user ? 
                 
                   (
-                    <Link href={'/profile'} passHref>
+                    // <Link href={'/profile'} passHref>
                       <ProfileIcon />
-                    </Link>
+                    // </Link>
                   )
                   : 
                   <HiOutlineUserCircle
